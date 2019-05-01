@@ -1,0 +1,123 @@
+// @Pattern:
+package pattern~>file;
+
+import pattern~>text=>Text;
+
+pattern File implements AsFile {
+    
+    in  port parent     : AsFolder;
+    in  port name       : Text;
+    in  port ext        : Text;
+    in  port processors : FileProcessor*;
+    
+    public new() {
+        this.ensureName_isNotNull_exceptRootFolder();
+        this.ensureProcessors_executes();
+    }
+    public new(pName :Text) {
+        this();
+        this.name := pName;
+    }
+    
+    public asFile(): File {
+        return this;
+    }
+    
+    public isFile(): boolean {
+        const aIsFile = !(this ==> AsFolder);
+        return aIsFile;
+    }
+    public isFolder(): boolean {
+        const aIsFolder = (this ==> AsFolder);
+        return aIsFolder;
+    }
+    
+    public method fullname(): Text {
+        const aExtension = (this.ext == null)
+                    ? ""
+                    : "." + this.ext;
+        const aFullName = $\#"#this.name##aExtension#"#;
+        const aIsFullName_Empty = (aFullName.length() == 0);
+        if (!aIsFullName_Empty)
+            return aFullName;
+        
+        const aRootName = $\#"#java.io.File.separator#"#;
+        return aRootName;
+    }
+    
+    public method fullpath() :Text {
+        const aIsHasParent = (this.parent == null);
+        const aParentPath  = aIsHasParent
+                    ? ""
+                    : this.parent.fullpath();
+        
+        const aIsParent_Root = ((aParentPath?$ == "/") || (aParentPath?$ == ""));
+        const aSeparator     = aIsParent_Root
+                    ? ""
+                    : java.io.File.separator;
+        
+        const aFullName = this.fullname();
+        const aFullPath = $\#"#aParentPath##aSeparator##aFullName#"#;
+        return aFullPath;
+    }
+    
+    public toString(): String {
+        const aFullName = this.fullname();
+        return aFullName?$;
+    }
+    public toDetail(): String {
+        const aFullPath = this.fullpath();
+        return aFullPath?$;
+    }
+    
+    public is(pObj: Any): boolean {
+        const aEquals = this.equals(pObj);
+        if (!aEquals)
+            return false;
+        
+        const thisType = this.getType();
+        const pObjType = pObj.getType();
+        const aIsSameType = (thisType == pObjType);
+        return aIsSameType;
+    }
+    public equals(pObj: Any): boolean {
+        cast(AsFile aObj = pObj) {
+            const thisFullPath      = this.asFile().fullpath();
+            const aObjFullPath      = aObj.asFile().fullpath();
+            const aIsFullPathEquals = thisFullPath.equals(aObjFullPath);
+            return aIsFullPathEquals;
+        }
+        return false;
+    }
+    
+    // Private -------------------------------------------------------------------------------------
+    
+    private ensureName_isNotNull_exceptRootFolder(): void {
+        const aIsFolder = this.isFolder();
+        if (aIsFolder)
+            return;
+        
+        ~:after(this.name, this.parent): {
+            if ((this.name == null) && (this.parent == null))
+                throw new RuntimeException(
+                    "Name and parent of a file cannot be both null <pattern~>file=>File96>: " + this
+                );
+        }
+    }
+    
+    
+    private out port markedWhenRendered : boolean;
+    private ensureProcessors_executes(): void {
+        ~:after(this.markedWhenRendered):{
+            const aIsNoProcessors = (this.processors?.size() == 0);
+            if (!aIsNoProcessors) {
+                foreach (FileProcessor aFProcessor : this.processors) {
+                    if (aFProcessor == null)
+                        continue;
+                    
+                    aFProcessor(this);
+                }
+            }
+        }
+    }
+}

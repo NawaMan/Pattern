@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="/home/nawaman/Documents/Others/AppData/Eclipse-Workspaces/Pattern/Pattern.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Pattern/CreateJar.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="/Pattern/Manifest" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/Pattern/PatternCompiler.tpt"/>
+        <javaElement handleIdentifier="=RegParser/source"/>
+        <file path="/Curry/LanguageSpec.tpt"/>
+        <javaElement handleIdentifier="=TestSuite/source"/>
+        <folder path="/Curry/tests"/>
+        <file path="/Pattern/Test.project"/>
+        <file path="/JavaCompiler/build.xml"/>
+        <file path="/Pattern/run-script"/>
+        <folder path="/Pattern/dist"/>
+        <file path="/Curry/JavaSectionExtractor.tpt"/>
+        <file path="/Curry/UnitDesc.tpt"/>
+        <file path="/Curry/Curry.ces"/>
+        <file path="/Pattern/Pattern.ces"/>
+        <file path="/Curry/run-script"/>
+        <file path="/JavaCompiler/Bin.jardesc"/>
+        <javaElement handleIdentifier="=JavaCompiler/source"/>
+        <file path="/Curry/Engine_Simple.ces"/>
+        <folder path="/SimpleScript/ss_libs"/>
+        <javaElement handleIdentifier="=SimpleScript/source"/>
+        <file path="/Curry/Test.curry"/>
+        <file path="/Pattern/Text_ARecord.tpt"/>
+        <file path="/Curry/Engine_Complex.ces"/>
+        <file path="/Pattern/Pattern.cls"/>
+        <file path="/Pattern/test.intention"/>
+        <javaElement handleIdentifier="=SimpleCompiler/source"/>
+        <file path="/JavaCompiler/README"/>
+        <file path="/Curry/CurryCompiler.tpt"/>
+        <file path="/RPTypePackage/RegParserCompiler.rpt"/>
+        <javaElement handleIdentifier="=Pattern/source"/>
+        <file path="/JavaCompiler/SourceDoc.jardesc"/>
+        <file path="/Curry/Curry.cls"/>
+        <javaElement handleIdentifier="=NawaUtils/source"/>
+        <javaElement handleIdentifier="=Curry/source"/>
+        <file path="/Curry/EngineSpec.tpt"/>
+        <javaElement handleIdentifier="=RPTypePackage/source"/>
+        <folder path="/SimpleScript/dist"/>
+        <file path="/RegParser/RegParserCompiler.rpt"/>
+        <javaElement handleIdentifier="=Libraries/source"/>
+        <file path="/Curry/RegParserCompiler.rpt"/>
+        <folder path="/Pattern/tests"/>
+        <javaElement handleIdentifier="=Usepath/source"/>
+        <folder path="/Pattern/units"/>
+        <file path="/Pattern/Pattern-bin.jardesc"/>
+    </selectedElements>
+</jardesc>

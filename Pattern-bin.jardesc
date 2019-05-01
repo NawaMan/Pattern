@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="Pattern/dist/Pattern-bin.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Pattern/Pattern-bin.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="true"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=Pattern/source&lt;net.nawaman.pattern{Main.java[Main" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.typepackage{PTypePackagePocket.java"/>
+        <file path="/Pattern/PatternCompiler.tpt"/>
+        <javaElement handleIdentifier="=Curry/source&lt;net.nawaman.curry.extra.type_enum"/>
+        <file path="/Curry/LanguageSpec.tpt"/>
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.typepackage{TPGetChecker.java"/>
+        <javaElement handleIdentifier="=Curry/source&lt;net.nawaman.curry.lang.Curry"/>
+        <javaElement handleIdentifier="=RegParser/source&lt;net.nawaman.regparser.parsers"/>
+        <javaElement handleIdentifier="=NawaUtils/source&lt;net.nawaman.util"/>
+        <javaElement handleIdentifier="=Curry/source&lt;net.nawaman.curry.compiler"/>
+        <file path="/Pattern/run-script"/>
+        <javaElement handleIdentifier="=Curry/source&lt;net.nawaman.curry.util"/>
+        <file path="/Pattern/units/Core.cuf"/>
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.typepackage{PTypePackage.java"/>
+        <file path="/Curry/JavaSectionExtractor.tpt"/>
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.typepackage{TPackageScriptEngine.java"/>
+        <file path="/Curry/UnitDesc.tpt"/>
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.codereplace"/>
+        <file path="/Pattern/Pattern.ces"/>
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.typepackage{PTKind.java"/>
+        <javaElement handleIdentifier="=SimpleScript/source"/>
+        <javaElement handleIdentifier="=Curry/source&lt;net.nawaman.curry.script"/>
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.typepackage{TPVerifier.java"/>
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.typepackage{TPCompiler.java"/>
+        <file path="/Pattern/Pattern.cls"/>
+        <javaElement handleIdentifier="=NawaUtils/source&lt;net.nawaman.util.datastructure"/>
+        <javaElement handleIdentifier="=Curry/source&lt;net.nawaman.curry.extra.type_object"/>
+        <javaElement handleIdentifier="=JavaCompiler/source&lt;net.nawaman.javacompiler"/>
+        <javaElement handleIdentifier="=RegParser/source&lt;net.nawaman.regparser"/>
+        <javaElement handleIdentifier="=Curry/source&lt;net.nawaman.curry"/>
+        <javaElement handleIdentifier="=NawaUtils/source&lt;net.nawaman.task"/>
+        <javaElement handleIdentifier="=SimpleCompiler/source"/>
+        <file path="/Curry/CurryCompiler.tpt"/>
+        <javaElement handleIdentifier="=NawaUtils/source&lt;net.nawaman.text"/>
+        <javaElement handleIdentifier="=Pattern/source"/>
+        <file path="/Curry/EngineSpec.tpt"/>
+        <file path="/Pattern/RegParserCompiler.rpt"/>
+        <javaElement handleIdentifier="=RPTypePackage/source&lt;net.nawaman.regparser.typepackage{PTSpec.java"/>
+        <javaElement handleIdentifier="=Usepath/source"/>
+    </selectedElements>
+    <fatjar builder="org.eclipse.jdt.ui.plain_jar_builder" launchConfig=""/>
+</jardesc>

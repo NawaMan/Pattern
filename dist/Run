@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Obtain from `find /usr -name tools.jar`
+TOOLSJAR_PATH=/usr/lib/jvm/java-6-sun-1.6.0.13/lib/tools.jar
+
+java -classpath .:$TOOLSJAR_PATH -jar Pattern-bin.jar "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"

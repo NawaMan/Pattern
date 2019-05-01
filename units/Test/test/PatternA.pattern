@@ -1,0 +1,15 @@
+// @Pattern:
+package test;
+
+import nawaman~>text=>Text;
+
+pattern PatternA {
+    
+    in port prefix: Text;
+    in port suffix: Text;
+    
+    in port content: Text;
+    
+    out port result: Text := <${<(prefix?$)><(content?$)><(suffix?$)>}$>;
+    
+}

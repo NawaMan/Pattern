@@ -1,0 +1,12 @@
+// @Pattern:
+
+@:println("Hello World!!!");
+@:println();
+
+// The parameter count
+@:println("$Args.length: " + $Args?.length);
+
+// The each parameter
+foreach(String $Arg : $Args)
+	@:printf("$Args[%s]: %s\n", $Count$, $Args?[$Count$]);
+@:println();

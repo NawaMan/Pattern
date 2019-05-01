@@ -1,0 +1,15 @@
+// @Pattern:
+package nawaman~>text;
+
+public pattern File {
+	
+	constant DefaultBaseDIR = "results/" + #:getEngineVarValue("ProjectName")?$;
+	
+	in port Name    :Text;
+	in port EXT     :Text;
+	in port Path    :Text;
+	in port BaseDIR :Text = File.DefaultBaseDIR;
+	
+	out port FullName:Text = $\~"~BaseDIR~~(?BaseDIR:"/")~~Path~~(?Path:"/")~~Name~~(?EXT:".")~~EXT~"~;
+
+}

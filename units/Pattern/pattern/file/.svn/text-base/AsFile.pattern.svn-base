@@ -1,0 +1,15 @@
+// @Pattern:
+package pattern~>file;
+
+import pattern~>text=>Text;
+
+interface AsFile {
+    
+    public asFile(): File;
+    
+    public isFile():   boolean;
+    public isFolder(): boolean;
+    
+    public fullpath(): Text;
+    
+}

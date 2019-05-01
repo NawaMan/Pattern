@@ -1,0 +1,5 @@
+#!/bin/sh
+
+TOOLSJAR_PATH=`find /usr -name tools.jar`
+
+java -classpath .:$TOOLSJAR_PATH -jar Pattern-bin.jar "$@"

@@ -1,0 +1,45 @@
+// @Pattern:
+package nawaman~>text;
+
+public pattern TextFile extends File {
+
+	in  port Content :Text;
+	out port ToSave  :boolean;
+	out port ToShow  :boolean;
+	
+	public function render():void {
+		// This is because 'super.render()' cannot be used so customize render() is not possible for now. 
+		this.doRender();
+	}
+	
+	protected function doRender() :void {
+		this.ToSave = false;
+		this.ToShow = true;
+		
+		if(this.ToShow) this.showContent();
+		if(this.ToSave) this.saveFile();
+	}
+	
+	public method getCharSequence():CharSequence {
+		return this.Content;
+	}
+	
+	protected function saveFile():void {
+		String theFileName = this.FullName?$;
+		String theContent  = this.Content ?$;
+		UText.SaveTextToFile(theFileName, theContent);
+	}
+	
+	protected function showContent():String {
+		String FullName = this.FullName?$;
+		@:println( 
+<${--- ---}$>
+===========================================================
+<(FullName)>:
+-----------------------------------------------------------
+<(Content)>
+===========================================================
+<${--- ---}$>
+		);
+	}
+}

@@ -1,0 +1,30 @@
+// ##:Complex-Engine; :##
+// @Java: { function (EngineName:String):net.nawaman.curry.EngineSpec }
+import net.nawaman.curry.*;
+import net.nawaman.curry.extra.type_enum.*;
+import net.nawaman.curry.extra.type_object.*;
+
+static class MyEngineSpec extends EngineSpec {
+	String EngineName;
+	public MyEngineSpec(String pEngineName) {
+		this.EngineName = pEngineName;
+	}
+	public @Override String getEngineName() {
+		return this.EngineName;
+	}
+	protected @Override EngineExtension[] getExtensions() {
+		return new EngineExtension[] {
+				new EngineExtensions.EE_AdvanceLoop(),
+				new EngineExtensions.EE_Java(),
+				new EngineExtensions.EE_Unit(),
+				new EngineExtensions.EE_DefaultPackage(),
+				new EngineExtensions.EE_StackOwner(),
+				new EngineExtensions.EE_StackOwnerCustomizable(),
+				new EE_Object(),
+				new EE_Enum()
+		};
+	}
+}
+
+return new MyEngineSpec(EngineName);
+

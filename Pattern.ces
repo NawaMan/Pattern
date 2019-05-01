@@ -1,0 +1,17 @@
+##:Simple-Engine; :##
+##:Extensions {
+	Java;
+	StackOwner;
+	StackOwnerCustomizable;
+	Unit;
+	DefaultPackage;
+	DataHolder;
+	AdvanceLoop;
+	Enum;
+	Object;
+	//Language;	// We use PatternLanguage instead
+	Text;
+	
+	net.nawaman.pattern.EE_PatternLanguage;
+	net.nawaman.pattern.EE_Pattern;
+}

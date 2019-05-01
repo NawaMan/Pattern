@@ -1,0 +1,10 @@
+// @Pattern:
+package pattern~>file;
+
+import pattern~>text=>Text;
+
+interface AsFolder extends AsFile {
+    
+    public asFolder(): Folder;
+    
+}
