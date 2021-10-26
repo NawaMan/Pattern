@@ -25,7 +25,7 @@ public class PIDMap extends PIDConfigurable {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     PIDMap(final Comparator pKeyComparator) {
         this.KeyComparator = pKeyComparator;
     }
@@ -33,7 +33,7 @@ public class PIDMap extends PIDConfigurable {
     Vector<PIDMapElement> AssociationData = new Vector<PIDMapElement>();
     boolean               IsCollapsed     = false;
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private Comparator KeyComparator   = null;
     
     final boolean isCollased() {
@@ -45,7 +45,7 @@ public class PIDMap extends PIDConfigurable {
     final int size() {
         return this.AssociationData.size();
     }
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     final Comparator getKeyComparator() {
         return this.KeyComparator;
     } 
@@ -59,7 +59,7 @@ public class PIDMap extends PIDConfigurable {
         this.AssociationData = this.mergeVector(this.AssociationData, aFrom.AssociationData);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private boolean compareKey(
             final Engine     $Engine,
             final Comparator pKeyComparator,
@@ -82,7 +82,7 @@ public class PIDMap extends PIDConfigurable {
         final boolean aIsEquals = $Engine.equals(pKey, aAKey) && $Engine.equals(aAKey, pKey);
         return aIsEquals;
     }
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private boolean compareElementKey(
             final Engine        $Engine,
             final Comparator    pKeyComparator,
@@ -101,7 +101,7 @@ public class PIDMap extends PIDConfigurable {
         aPort.mergeBy(aFrom);
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     void collapse(
             final Engine     $Engine,
             final Comparator pKeyComparator) {
@@ -163,7 +163,7 @@ public class PIDMap extends PIDConfigurable {
         this.AssociationData.add(aNewElement);
         return aNewElement.VPort;
     }
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     Port getElement(
             final Port   pPort,
             final Object pKey) {

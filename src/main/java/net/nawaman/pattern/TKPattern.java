@@ -20,7 +20,6 @@ import net.nawaman.curry.util.MoreData;
 
 public class TKPattern extends TKClass {
 
-	@SuppressWarnings("hiding")
 	static public final String KindName = "Pattern";
 	
 	/** Constructs a new TypeKind. */

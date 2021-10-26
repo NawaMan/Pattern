@@ -105,7 +105,7 @@ public class PKMap extends PortKind {
         return TRef;
     }
 	
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     /**{@inheritDoc}*/ @Override
 	public PortInternalData newInternalData(
             final Engine  $Engine,
@@ -137,7 +137,7 @@ public class PKMap extends PortKind {
 		return new PFVMap(pFinalValue, pFinalAction);
 	}
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     /**{@inheritDoc}*/ @Override
     Object tryNonNullDefaultFinalValue(
             Context          $Context,

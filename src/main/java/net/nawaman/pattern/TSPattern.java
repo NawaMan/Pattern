@@ -16,7 +16,6 @@ public class TSPattern extends TSClass {
     
 	// Constants ----------------------------------------------------------------------------------
     
-    @SuppressWarnings("hiding")
 	final static public int IndexCount = 16;
 	
 	final static public int Index_RenderFunction = 15;	// Macro

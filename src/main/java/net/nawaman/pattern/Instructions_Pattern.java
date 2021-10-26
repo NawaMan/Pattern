@@ -404,7 +404,6 @@ public class Instructions_Pattern {
     
     static public class Inst_GetDHValueOrNull extends Inst_GetDHValue {
         
-        @SuppressWarnings("hiding")
         static public final String Name = "getDHValueOrNull";
         
         Inst_GetDHValueOrNull(Engine pEngine) {

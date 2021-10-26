@@ -17,7 +17,7 @@ public class PFVMap extends FinalValue {
     
     ComparedMap<Object, Port> FinalValues = null;
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     void createFinalValue(
             final Context $Context,
             final Port    pPort) {
@@ -56,7 +56,7 @@ public class PFVMap extends FinalValue {
         this.FinalValues.toImmutable();
     }
 	
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private Map getValueAsMap() {
         final Object aValueObj = this.Value;
         if (aValueObj == null)
@@ -91,7 +91,7 @@ public class PFVMap extends FinalValue {
 	}
 	
 	/** Returns the length of the final result array */
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public int getLength() {
         if (this.FinalValues != null)
             return this.FinalValues.size();
@@ -105,7 +105,7 @@ public class PFVMap extends FinalValue {
 	}
 	
 	/** Returns the value associated with the key */
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public Object getValue(Object Key) {
         if (this.FinalValues != null)
             return this.FinalValues.get(Key).getData();
@@ -119,7 +119,7 @@ public class PFVMap extends FinalValue {
 	}
 	
     /** Returns the value associated with the key */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public Port getValueAsPort(Object Key) {
         if (this.FinalValues != null) {
             final Port aPort = this.FinalValues.get(Key);
@@ -144,7 +144,7 @@ public class PFVMap extends FinalValue {
     }
     
     /** Checks if the map contains the key */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public boolean containsKey(final Object pKey) {
         if (this.FinalValues != null) {
             final boolean aIsContainKey = this.FinalValues.containsKey(pKey);
@@ -182,7 +182,7 @@ public class PFVMap extends FinalValue {
         return A.getActionRecord();
     }
 	/** Returns the final value object at the index */
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public FinalValue getFinalValue(Object Key) {
         if (this.FinalValues != null) {
             final Port aPValue = this.FinalValues.get(Key);
