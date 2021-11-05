@@ -12,7 +12,7 @@ import net.nawaman.curry.TLParametered.TRParametered;
 import net.nawaman.curry.compiler.CompileProduct;
 import net.nawaman.curry.compiler.Util_Atomic;
 import net.nawaman.curry.util.MoreData;
-import net.nawaman.regparser.ParseResult;
+import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.PTypePackage;
 
 public class Util_NewPort {

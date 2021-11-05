@@ -27,7 +27,7 @@ import net.nawaman.pattern.Instructions_Pattern.Inst_GetAttrMapPortElement;
 import net.nawaman.pattern.Instructions_Pattern.Inst_GetDHValueOrNull;
 import net.nawaman.pattern.Instructions_Pattern.Inst_GetMapPortElement;
 import net.nawaman.pattern.Instructions_Pattern.Inst_NewWaitedAttributeAsRenderer;
-import net.nawaman.regparser.ParseResult;
+import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.PTypePackage;
 import net.nawaman.util.UString;
 
@@ -505,7 +505,7 @@ public class Util_Action {
 		Engine      $Engine = $CProduct.getEngine(); 
 		MExecutable $ME     = $Engine.getExecutableManager();
 
-		int    OperandIdx = $Result.getLastIndexOfEntryName("#Operand");
+		int    OperandIdx = $Result.lastIndexFor("#Operand");
 		Object Operand    = $Result.valueOf(OperandIdx, $TPackage, $CProduct);
 		int    OperandPos = $Result.posOf  (OperandIdx);
 		if(!Util_Compiler.EnsureOperandAppendablePort(Operand, OperandPos, $CProduct)) return null;
@@ -526,7 +526,7 @@ public class Util_Action {
 		Engine      $Engine = $CProduct.getEngine(); 
 		MExecutable $ME     = $Engine.getExecutableManager();
 
-		int    OperandIdx = $Result.getLastIndexOfEntryName("#Operand");
+		int    OperandIdx = $Result.lastIndexFor("#Operand");
 		Object Operand    = $Result.valueOf(OperandIdx, $TPackage, $CProduct);
 		int    OperandPos = $Result.posOf  (OperandIdx);
 		if(!Util_Compiler.EnsureOperandAppendablePort(Operand, OperandPos, $CProduct)) return null;
@@ -607,7 +607,7 @@ public class Util_Action {
 		Engine      $Engine = $CProduct.getEngine(); 
 		MExecutable $ME     = $Engine.getExecutableManager();
 
-		int    OperandIdx = $Result.getLastIndexOfEntryName("#Operand");
+		int    OperandIdx = $Result.lastIndexFor("#Operand");
 		Object Operand    = $Result.valueOf(OperandIdx, $TPackage, $CProduct);
 		int    OperandPos = $Result.posOf  (OperandIdx);
 		if(!Util_Compiler.EnsureOperandAppendablePort(Operand, OperandPos, $CProduct)) return null;
@@ -672,7 +672,7 @@ public class Util_Action {
         final Engine      $Engine = $CProduct.getEngine(); 
         final MExecutable $ME     = $Engine.getExecutableManager();
         
-        final int    OperandIdx = $Result.getLastIndexOfEntryName("#Operand");
+        final int    OperandIdx = $Result.lastIndexFor("#Operand");
         final Object Operand    = $Result.valueOf(OperandIdx, $TPackage, $CProduct);
         final int    OperandPos = $Result.posOf  (OperandIdx);
         // TODO - Change to Ensure Map Operand

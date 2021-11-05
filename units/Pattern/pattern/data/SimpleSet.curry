@@ -272,4 +272,32 @@
 			H += @:hash(Vs.get(i));
 		return H;
 	};
+    
+    @@:Method public stream():java.util.stream.Stream {
+       return this.Data.stream();
+    };
+    
+    @@:Method public parallelStream():java.util.stream.Stream {
+       return this.Data.parallelStream();
+    };
+    
+    @@:Method public isImmutable():boolean {
+        return false;
+    };
+    
+    @@:Method public removeIf(predicate: java.util.function.Predicate):boolean {
+        return this.Data.removeIf(predicate);
+    };
+    
+    @@:Method public forEach(consumer: java.util.function.Consumer):void {
+        return this.Data.forEach(consumer);
+    };
+    
+    @@:Method public spliterator():java.util.Spliterator {
+        return this.Data.spliterator();
+    };
+    
+    @@:Method public toArray(func: java.util.function.IntFunction):any[] {
+        return this.Data.toArray(func);
+    };
 };

@@ -2,6 +2,7 @@
 package pattern~>file;
 
 import pattern~>text=>Text;
+import pattern~>file=>File;
 
 interface AsFile {
     

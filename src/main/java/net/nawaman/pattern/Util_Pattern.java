@@ -36,7 +36,7 @@ import net.nawaman.curry.compiler.StackOwnerAppender.OperAppender;
 import net.nawaman.curry.compiler.Util_File;
 import net.nawaman.curry.util.MoreData;
 import net.nawaman.regparser.PTypeProvider;
-import net.nawaman.regparser.ParseResult;
+import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.PTypePackage;
 import net.nawaman.util.UArray;
 import net.nawaman.util.UObject;
@@ -97,7 +97,7 @@ public class Util_Pattern {
 		if($Imports != null) $CProduct.addImport($Imports);
 
 		Documentation Doc = null;
-		for(int i = 0; i < $Result.count(); i++) {
+		for(int i = 0; i < $Result.entryCount(); i++) {
 			String EntryName = $Result.nameOf(i);
 
 			if(enPATTERN_TYPE.equals(EntryName)) {
@@ -199,7 +199,7 @@ public class Util_Pattern {
 		// Parse Pattern Types --------------------------------------------------------------------
 
 		Documentation Doc = null;
-		for(int i = 0; i < $Result.count(); i++) {
+		for(int i = 0; i < $Result.entryCount(); i++) {
 			String EntryName = $Result.nameOf(i);
 
 			if(enPATTERN_TYPE.equals(EntryName)) {
@@ -310,7 +310,7 @@ public class Util_Pattern {
 			if(!(C instanceof FileCompileResult.TypeConstructor)) {
 				$CProduct.reportError(
 					"Invalid return result for constructor. <PatternElements:297>",
-					null, CPRs[i].getStartPosition()
+					null, CPRs[i].startPosition()
 				);
 				return null;
 			}
@@ -327,7 +327,7 @@ public class Util_Pattern {
 			if(!(M instanceof FileCompileResult.TypeMethod)) {
 				$CProduct.reportError(
 					"Invalid return result for method. <PatternElements:314>",
-					null, MPRs[i].getStartPosition()
+					null, MPRs[i].startPosition()
 				);
 				return null;
 			}
@@ -345,7 +345,7 @@ public class Util_Pattern {
 			if(!(F instanceof FileCompileResult.TypeField)) {
 				$CProduct.reportError(
 					"Invalid return result for pattern attribute. <Util_Pattern:110>",
-					null, FPRs[i].getStartPosition()
+					null, FPRs[i].startPosition()
 				);
 				return null;
 			}
@@ -486,8 +486,8 @@ public class Util_Pattern {
 			
 		} else if(DValue != null) {
 			int EIndex = -1;
-			for(int i = $Result.count(); --i >= 0; ) {
-				if(DValue != $Result.getSubOf(i)) continue;
+			for(int i = $Result.entryCount(); --i >= 0; ) {
+				if(DValue != $Result.subResultAt(i)) continue;
 				EIndex = i;
 				break;
 			}
@@ -609,7 +609,7 @@ public class Util_Pattern {
 					Access, Signature, EKind, MData, Document);
 			
 		} else if(HasBody) {
-			int EIndex = $Result.getLastIndexOfEntryName(Util_Element.enCURRYBODY);
+			int EIndex = $Result.lastIndexFor(Util_Element.enCURRYBODY);
 			// Create the resolver
 			ElementResolver Resolver = Util_ElementResolver.newOperResolver(
 						IsStatic, Signature, EKind, $Result, EIndex, null, $TPackage, $CProduct);

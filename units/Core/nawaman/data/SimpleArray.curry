@@ -173,4 +173,16 @@
 			
 		return true;
 	};
+    
+    @@:Method public forEachRemaining(consumer: java.util.function.Consumer):void {
+        throw new UnsupportedOperationException("SimpleArray does not support forEachRemaining operation.");
+    };
+    
+    @@:Method public forEach(consumer: java.util.function.Consumer):void {
+        throw new UnsupportedOperationException("SimpleArray does not support forEach operation.");
+    };
+    
+    @@:Method public spliterator():java.util.Spliterator {
+        throw new UnsupportedOperationException("SimpleArray does not support spliterator operation.");
+    };
 };

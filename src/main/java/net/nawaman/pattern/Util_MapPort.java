@@ -1,12 +1,19 @@
 package net.nawaman.pattern;
 
-import net.nawaman.curry.*;
-import net.nawaman.curry.Instructions_DataHolder.*;
+import net.nawaman.curry.Engine;
+import net.nawaman.curry.Expression;
+import net.nawaman.curry.Instructions_DataHolder.Inst_GetDHValue;
 import net.nawaman.curry.Instructions_StackOwner.Inst_GetAttrValue;
-import net.nawaman.curry.compiler.*;
-import net.nawaman.pattern.Instructions_Pattern.*;
-import net.nawaman.regparser.*;
-import net.nawaman.regparser.typepackage.*;
+import net.nawaman.curry.MExecutable;
+import net.nawaman.curry.TKJava;
+import net.nawaman.curry.TypeRef;
+import net.nawaman.curry.compiler.CompileProduct;
+import net.nawaman.pattern.Instructions_Pattern.Inst_GetAttrMapPortElement;
+import net.nawaman.pattern.Instructions_Pattern.Inst_GetDHValueOrNull;
+import net.nawaman.pattern.Instructions_Pattern.Inst_GetMapPortElement;
+import net.nawaman.pattern.Instructions_Pattern.Inst_IsMapPortContainsKey;
+import net.nawaman.regparser.result.ParseResult;
+import net.nawaman.regparser.typepackage.PTypePackage;
 
 public class Util_MapPort {
     

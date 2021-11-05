@@ -87,4 +87,13 @@
 	@@:Method private throwNonMemberError():void {
 		throw new CurryError(\f"Invalid object in Variant type: `%s` for '%s' <Text:64>."(this, $Type$)); 
 	};
+    
+    @@:Method chars():java.util.stream.IntStream {
+       return toString().chars();
+    };
+    
+    @@:Method codePoints():java.util.stream.IntStream {
+       return toString().codePoints();
+    };
+	
 };

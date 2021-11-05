@@ -36,6 +36,14 @@
 		throw new UnsupportedOperationException("ArrayIterator does not support remove operation.");
 	};
 	
+	@@:Method public forEachRemaining(consumer: java.util.function.Consumer):void {
+        throw new UnsupportedOperationException("ArrayIterator does not support forEachRemaining operation.");
+	};
+    
+    @@:Method public forEach(consumer: java.util.function.Consumer):void {
+        throw new UnsupportedOperationException("ArrayIterator does not support forEach operation.");
+    };
+	
 	// General ---------------------------------------------------------------------------------------------------------
 	
 	<?{ Returns hash value (not hashCode) of this SimpleArray. }?>

@@ -20,6 +20,7 @@ import net.nawaman.curry.util.*;
 import net.nawaman.pattern.Instructions_Pattern.*;
 import net.nawaman.pattern.Util_Action.RendererInfo;
 import net.nawaman.regparser.*;
+import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.*;
 import net.nawaman.util.*;
 

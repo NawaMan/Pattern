@@ -2,7 +2,7 @@
 @@:Package(nawaman~>regparser);
 
 @@:Import(net.nawaman.regparser.RegParser);
-@@:Import(net.nawaman.regparser.ParseResult);
+@@:Import(net.nawaman.regparser.result.ParseResult);
 
 @@:Sub Parse(aParser: Parser, aText:String):ParseResult {
 	if(aParser == null) return null;

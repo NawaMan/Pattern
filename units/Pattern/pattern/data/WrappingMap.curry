@@ -162,4 +162,49 @@
     @@:Method public hash():int {
         return this.Data.hash();
     };
+    
+    @@:Method public computeIfPresent(key: any, func: java.util.function.BiFunction):any {
+        return this.Data.computeIfPresent(key, func);
+    };
+    
+    @@:Method public computeIfAbsent(key: any, func: java.util.function.BiFunction):any {
+        throw new UnsupportedOperationException("SimpleMap does not support sort operation.");
+    };
+    
+    @@:Method public computeIfAbsent(key: any, func: java.util.function.Function):any {
+        throw new UnsupportedOperationException("SimpleMap does not support sort operation.");
+    };
+    
+    @@:Method public getOrDefault(key: any, defaultValue: any):any {
+        throw new UnsupportedOperationException("SimpleMap does not support sort operation.");
+    };
+    
+    @@:Method public forEach(func: java.util.function.BiConsumer):void {
+        throw new UnsupportedOperationException("SimpleMap does not support forEach operation.");
+    };
+    
+    @@:Method public compute(key: any, action: java.util.function.BiFunction):any {
+        throw new UnsupportedOperationException("SimpleMap does not support compute operation.");
+    };
+    
+    @@:Method public putIfAbsent(a: any, b: any):any  {
+        throw new UnsupportedOperationException("WrappingMap does not support putIfAbsent operation.");
+    };
+    
+    @@:Method public merge(a: any, b: any, c: java.util.function.BiFunction):any  {
+        throw new UnsupportedOperationException("SimpleMap does not support merge operation.");
+    };
+    
+    @@:Method public replaceAll(a: java.util.function.BiFunction):void {
+        throw new UnsupportedOperationException("SimpleMap does not support replaceAll operation.");
+    };
+    @@:Method public replace(a: any, b: any, c: any):boolean {
+        throw new UnsupportedOperationException("SimpleMap does not support replace operation.");
+    };
+    @@:Method public replace(a: any, b: any):any {
+        throw new UnsupportedOperationException("SimpleMap does not support replace operation.");
+    };
+    @@:Method public remove(a: any, b: any):boolean {
+        throw new UnsupportedOperationException("SimpleMap does not support remove operation.");
+    };
 };

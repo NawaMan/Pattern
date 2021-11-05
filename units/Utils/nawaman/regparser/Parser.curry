@@ -2,7 +2,7 @@
 @@:Package(nawaman~>regparser);
 
 @@:Import(net.nawaman.regparser.RegParser);
-@@:Import(net.nawaman.regparser.ParseResult);
+@@:Import(net.nawaman.regparser.result.ParseResult);
 
 <?{ A type of a Parser }?>
 @@:TypeDef Variant Parser as <CharSequence|RegParser> {
