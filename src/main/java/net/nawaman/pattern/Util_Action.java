@@ -27,6 +27,7 @@ import net.nawaman.pattern.Instructions_Pattern.Inst_GetAttrMapPortElement;
 import net.nawaman.pattern.Instructions_Pattern.Inst_GetDHValueOrNull;
 import net.nawaman.pattern.Instructions_Pattern.Inst_GetMapPortElement;
 import net.nawaman.pattern.Instructions_Pattern.Inst_NewWaitedAttributeAsRenderer;
+import net.nawaman.regparser.result.Coordinate;
 import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.PTypePackage;
 import net.nawaman.util.UString;
@@ -106,7 +107,7 @@ public class Util_Action {
 		if(RendererExpr == null) {
 			$CProduct.reportError(
 				"The expression does not seems to be a renderer (Port/Pattern) <Util_BeforeAfter>",
-				null, $Result.posOf(0)
+				null, $Result.startPositionOf(0)
 			);
 			return null;
 		}
@@ -185,8 +186,8 @@ public class Util_Action {
 	}
 	
 	/** Prepare After in each level */
-    static Executable PrepareAction_Each(CompileProduct $CProduct, TypeRef ActionTRefSingle, TypeRef ActionTRefMultiple,
-			int[] CR, Vector<RendererInfo> Renderers, String[] VNames, ExecSignature Signature, Executable ActionBody) {
+	static Executable PrepareAction_Each(CompileProduct $CProduct, TypeRef ActionTRefSingle, TypeRef ActionTRefMultiple,
+			Coordinate CR, Vector<RendererInfo> Renderers, String[] VNames, ExecSignature Signature, Executable ActionBody) {
 		
 		if((Renderers == null) || (Renderers.size() == 0))
 			return ActionBody;
@@ -282,8 +283,8 @@ public class Util_Action {
 	
 	/** Prepare After operation */
 	static Executable PrepareAction(CompileProduct $CProduct, TypeRef ActionTRefSingle, TypeRef ActionTRefMultiple,
-			int[] CR, RendererInfo[] RendererInfos, String[] VNames, ExecSignature Signature, Executable ActionExec) {
-	    
+			Coordinate CR, RendererInfo[] RendererInfos, String[] VNames, ExecSignature Signature, Executable ActionExec) {
+		
 		if((RendererInfos == null) || (RendererInfos.length == 0))
 			return ActionExec;
 
@@ -364,7 +365,7 @@ public class Util_Action {
 						AName
 					),
 					null,
-					$Result.posOf(0)
+					$Result.startPositionOf(0)
 				);
 			}	
 			return null;
@@ -372,7 +373,7 @@ public class Util_Action {
 
 		Engine      $Engine = $CProduct.getEngine();
 		MExecutable $ME     = $Engine.getExecutableManager();
-		int[]       ValueCR = $Result.locationCROf("#Body");
+		Coordinate  ValueCR = $Result.coordinateOf("#Body");
 		
 		try {
 			// Prepare the signature
@@ -382,7 +383,7 @@ public class Util_Action {
 			                UString.EmptyStringArray,
 			                false,
 			                ReturnTypeRef,
-			                new Location($CProduct.getCurrentCodeName(), ValueCR[0], ValueCR[1]),
+			                new Location($CProduct.getCurrentCodeName(), ValueCR.col(), ValueCR.row()),
 			                null
 			            );
 			$CProduct.newMacroScope(Signature);
@@ -390,7 +391,7 @@ public class Util_Action {
 			String[] VNames = Util_Compiler.GetAllUsedLocalVariableNames($CProduct, false, ValueExpr);
 			if(VNames == null) VNames = UString.EmptyStringArray;
 			
-			int[]       ZeroCR    = $Result.locationCROf(0);
+			Coordinate  ZeroCR    = $Result.coordinateOf(0);
 			Executable  ValueExec = (VNames.length == 0)
 			                            ? ValueExpr
 			                            : Util_Compiler.GetPatternExecutable($CProduct, Signature, ValueExpr);
@@ -409,14 +410,14 @@ public class Util_Action {
 	
 	/** Compile a cast expression */
 	static public Expression CompileAssign(Expression Condition, Expression Operand, String OperandStr,
-			String OperatorStr, String ValueStr, Object Value, int[] ValueCR, int OperandPos, int ValuePos,
+			String OperatorStr, String ValueStr, Object Value, Coordinate ValueCR, int OperandPos, int ValuePos,
 			ParseResult $Result, PTypePackage $TPackage, CompileProduct $CProduct) {
 		
 		Engine      $Engine = $CProduct.getEngine(); 
 		MExecutable $ME     = $Engine.getExecutableManager();
-		int[]       ZeroCR  = $Result.locationCROf(0);
+		Coordinate  ZeroCR  = $Result.coordinateOf(0);
 		
-		// If a regular (non-port) assignement, delefate to a regular compilation
+		// If a regular (non-port) assignment, delegate to a regular compilation
 		if(!Util_Compiler.IsOperandPort(Operand, $CProduct)) {
 			if(OperatorStr.equals(":")) {
 				$CProduct.reportError(
@@ -456,8 +457,8 @@ public class Util_Action {
 		
 		// New
 		if($Result.textOf("$New") != null) {
-			ValueCR  = $Result.locationCROf("$New");
-			ValuePos = $Result.posOf(       "$New");
+			ValueCR  = $Result.coordinateOf("$New");
+			ValuePos = $Result.startPositionOf(       "$New");
 			ValueTR  = RequireTR;
 			
 			boolean    HasParam     = $Result.textOf("#NewParam") != null;
@@ -488,7 +489,7 @@ public class Util_Action {
 	}
 
 	/** Parse and Compile Assertion block */
-	static public Object ParseCompileAssertion(Expression ValueExpr, int[] ValueCR,
+	static public Object ParseCompileAssertion(Expression ValueExpr, Coordinate ValueCR,
 			ParseResult $Result, PTypePackage $TPackage, CompileProduct $CProduct) {
 
 		TypeRef    ActionTRefSingle   = UPattern.TREF_PAAssertion_Simple;
@@ -505,13 +506,13 @@ public class Util_Action {
 		Engine      $Engine = $CProduct.getEngine(); 
 		MExecutable $ME     = $Engine.getExecutableManager();
 
-		int    OperandIdx = $Result.lastIndexFor("#Operand");
-		Object Operand    = $Result.valueOf(OperandIdx, $TPackage, $CProduct);
-		int    OperandPos = $Result.posOf  (OperandIdx);
+		int    OperandIdx = $Result.indexOf        ("#Operand");
+		Object Operand    = $Result.valueOf        (OperandIdx, $TPackage, $CProduct);
+		int    OperandPos = $Result.startPositionOf(OperandIdx);
 		if(!Util_Compiler.EnsureOperandAppendablePort(Operand, OperandPos, $CProduct)) return null;
 
-		int[]      ZeroCR    = $Result.locationCROf(0);
-		int[]      ValueCR   = $Result.locationCROf("#Value");
+		Coordinate ZeroCR    = $Result.coordinateOf(0);
+		Coordinate ValueCR   = $Result.coordinateOf("#Value");
 		Expression ValueExpr = Util_Compiler.CompileValueExpr("#Value", $Result, $TPackage, $CProduct);
 		Executable ValueExec = Util_Compiler.GetPatternExecutableAssignment($CProduct, ValueExpr, ValueCR);
 		Expression VExpr     = Util_Compiler.GetWrappedExecutableValue($ME, ValueExec, ValueCR);
@@ -526,17 +527,17 @@ public class Util_Action {
 		Engine      $Engine = $CProduct.getEngine(); 
 		MExecutable $ME     = $Engine.getExecutableManager();
 
-		int    OperandIdx = $Result.lastIndexFor("#Operand");
-		Object Operand    = $Result.valueOf(OperandIdx, $TPackage, $CProduct);
-		int    OperandPos = $Result.posOf  (OperandIdx);
+		int    OperandIdx = $Result.indexOf        ("#Operand");
+		Object Operand    = $Result.valueOf        (OperandIdx, $TPackage, $CProduct);
+		int    OperandPos = $Result.startPositionOf(OperandIdx);
 		if(!Util_Compiler.EnsureOperandAppendablePort(Operand, OperandPos, $CProduct)) return null;
 
 		TypeRef OperTRef = $CProduct.getReturnTypeRefOf(Operand);
 		TypeRef DataTRef = ((TLParametered.TRParametered)OperTRef).getParameterTypeRef(0);
 		
 		// Compile the body -----------------------------------------------------------------------
-		int[]         ZeroCR  = $Result.locationCROf(0);
-		int[]         BodyCR  = $Result.locationCROf("$BodyStart");
+		Coordinate    ZeroCR  = $Result.coordinateOf(0);
+		Coordinate    BodyCR  = $Result.coordinateOf("$BodyStart");
 		boolean       IsShort = $Result.textOf("$IsShort") != null;
 		boolean       IsHash  = false;
 		String[]      PNames;
@@ -576,7 +577,7 @@ public class Util_Action {
 			                PNames,
 			                false,
 			                TKJava.TInteger.getTypeRef(),
-			                new Location($CProduct.getCurrentCodeName(), BodyCR[0], BodyCR[1]),
+			                new Location($CProduct.getCurrentCodeName(), BodyCR.col(), BodyCR.row()),
 			                null
 			            );
 			$CProduct.newMacroScope(Signature);
@@ -607,17 +608,17 @@ public class Util_Action {
 		Engine      $Engine = $CProduct.getEngine(); 
 		MExecutable $ME     = $Engine.getExecutableManager();
 
-		int    OperandIdx = $Result.lastIndexFor("#Operand");
-		Object Operand    = $Result.valueOf(OperandIdx, $TPackage, $CProduct);
-		int    OperandPos = $Result.posOf  (OperandIdx);
+		int    OperandIdx = $Result.indexOf        ("#Operand");
+		Object Operand    = $Result.valueOf        (OperandIdx, $TPackage, $CProduct);
+		int    OperandPos = $Result.startPositionOf(OperandIdx);
 		if(!Util_Compiler.EnsureOperandAppendablePort(Operand, OperandPos, $CProduct)) return null;
 		
 		TypeRef OperTRef = $CProduct.getReturnTypeRefOf(Operand);
 		TypeRef DataTRef = ((TLParametered.TRParametered)OperTRef).getParameterTypeRef(0);
 		
 		// Compile the body -----------------------------------------------------------------------
-		int[]         ZeroCR = $Result.locationCROf(0);
-		int[]         BodyCR = $Result.locationCROf("$BodyStart");
+		Coordinate    ZeroCR = $Result.coordinateOf(0);
+		Coordinate    BodyCR = $Result.coordinateOf("$BodyStart");
 		boolean       IsShort = $Result.textOf("$IsShort") != null;
 		String[]      PNames;
 		TypeRef[]     PTRefs;
@@ -628,7 +629,7 @@ public class Util_Action {
 			
 		try {
 			// Prepare the variables
-			String EachName = IsShort ? "$$" : $Result.textOf("$Each");			
+			String EachName = IsShort ? "$$" : $Result.textOf("$Each");
 			PNames = new String[]  { EachName };
 			PTRefs = new TypeRef[] { DataTRef };
 
@@ -639,7 +640,7 @@ public class Util_Action {
 			                PNames,
 			                false,
 			                TKJava.TBoolean.getTypeRef(),
-			                new Location($CProduct.getCurrentCodeName(), BodyCR[0], BodyCR[1]),
+			                new Location($CProduct.getCurrentCodeName(), BodyCR.col(), BodyCR.row()),
 			                null
 			            );
 			$CProduct.newMacroScope(Signature);
@@ -672,21 +673,21 @@ public class Util_Action {
         final Engine      $Engine = $CProduct.getEngine(); 
         final MExecutable $ME     = $Engine.getExecutableManager();
         
-        final int    OperandIdx = $Result.lastIndexFor("#Operand");
-        final Object Operand    = $Result.valueOf(OperandIdx, $TPackage, $CProduct);
-        final int    OperandPos = $Result.posOf  (OperandIdx);
+        final int    OperandIdx = $Result.indexOf        ("#Operand");
+        final Object Operand    = $Result.valueOf        (OperandIdx, $TPackage, $CProduct);
+        final int    OperandPos = $Result.startPositionOf(OperandIdx);
         // TODO - Change to Ensure Map Operand
         if(!Util_Compiler.EnsureOperandMapPort(Operand, OperandPos, $CProduct))
             return null;
         
-        final int[] ZeroCR    = $Result.locationCROf(0);
+        final Coordinate ZeroCR    = $Result.coordinateOf(0);
         
-        final int[]      KeyCR   = $Result.locationCROf("#Key");
+        final Coordinate KeyCR   = $Result.coordinateOf("#Key");
         final Expression KeyExpr = Util_Compiler.CompileValueExpr("#Key", $Result, $TPackage, $CProduct);
         final Executable KeyExec = Util_Compiler.GetPatternExecutableAssignment($CProduct, KeyExpr, KeyCR);
         final Expression KExpr   = Util_Compiler.GetWrappedExecutableValue($ME, KeyExec, KeyCR);
         
-        final int[]      ValueCR   = $Result.locationCROf("#Value");
+        final Coordinate ValueCR   = $Result.coordinateOf("#Value");
         final Expression ValueExpr = Util_Compiler.CompileValueExpr("#Value", $Result, $TPackage, $CProduct);
         final Executable ValueExec = Util_Compiler.GetPatternExecutableAssignment($CProduct, ValueExpr, ValueCR);
         final Expression VExpr     = Util_Compiler.GetWrappedExecutableValue($ME, ValueExec, ValueCR);

@@ -20,6 +20,7 @@ import net.nawaman.curry.util.*;
 import net.nawaman.pattern.Instructions_Pattern.*;
 import net.nawaman.pattern.Util_Action.RendererInfo;
 import net.nawaman.regparser.*;
+import net.nawaman.regparser.result.Coordinate;
 import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.*;
 import net.nawaman.util.*;
@@ -194,7 +195,7 @@ public class Util_Compiler {
 	static public Expression NewConfigPortExpr(
 	        final CompileProduct $CProduct,
 	              Object         Operand,
-	        final int[]          CR,
+	        final Coordinate     CR,
 	        final String         ConfigName,
 	        Object[] Params) {
 		if(Operand == null) return null;
@@ -265,7 +266,33 @@ public class Util_Compiler {
 	
 	
 	/** Creates and return a new config expression for the operand */
-    static Expression NewAddActionToPortExpr(CompileProduct $CProduct, Object Operand, int[] ZeroCR, TypeRef ActionTRef,
+	static Expression NewAddActionToPortExpr(CompileProduct $CProduct, Object Operand, int[] ZeroCR, TypeRef ActionTRef,
+			int[] ValueCR, Expression Condition, Expression Value, Object ... ExtraParams) {
+		return NewAddActionToPortExpr($CProduct, Operand, Coordinate.of(ZeroCR), ActionTRef, ValueCR, Condition, Value, ExtraParams);
+	}
+	/** Creates and return a new config expression for the operand */
+	static Expression NewAddActionToPortExpr(CompileProduct $CProduct, Object Operand, Coordinate ZeroCR, TypeRef ActionTRef,
+			Coordinate ValueCR, Expression Condition, Expression Value, Object ... ExtraParams) {
+		Engine      $Engine = $CProduct.getEngine();
+		MExecutable $ME     = $Engine.getExecutableManager();
+
+		// Prepare parameter
+		int EPCount = (ExtraParams == null) ? 0 : ExtraParams.length;
+		Object[] Params = new Object[EPCount + 3];
+		Params[0] = $ME.newType(ValueCR, ActionTRef);	// Type
+		Params[1] = Condition;	                        // Condition
+		Params[2] = Value;		                        // Action
+		if(ExtraParams != null) System.arraycopy(ExtraParams, 0, Params, 3, EPCount);
+		
+		// Create the newInstance of the action type
+		Expression VExpr = $ME.newExpr(ValueCR, Inst_NewInstance.Name, (Object[])Params);
+		if(!VExpr.ensureParamCorrect($CProduct)) return null;
+
+		// Create the expression
+		return Util_Compiler.NewConfigPortExpr($CProduct, Operand, ZeroCR, UPattern.CONFIG_NAME_PATTERN_ACTION, new Object[] { VExpr });
+	}
+	/** Creates and return a new config expression for the operand */
+	static Expression NewAddActionToPortExpr(CompileProduct $CProduct, Object Operand, Coordinate ZeroCR, TypeRef ActionTRef,
 			int[] ValueCR, Expression Condition, Expression Value, Object ... ExtraParams) {
 		Engine      $Engine = $CProduct.getEngine();
 		MExecutable $ME     = $Engine.getExecutableManager();
@@ -492,7 +519,29 @@ public class Util_Compiler {
 		
 		return new CurrySubRoutine($CProduct.getEngine(), Signature, ValueExpr, VarNames, FrozenScope);
 	}
-
+	
+	/** Create an assignment executable for Pattern assignment */
+	static public Executable GetPatternExecutableAssignment(CompileProduct $CProduct, Object Value, Coordinate CR) {
+		// It was not an executable (therefore not an expression), make it one and return
+		if(!(Value instanceof Executable))
+			Value = Expression.toExpr(Value);
+		
+		Expression ValueExpr = (Expression)Value;
+		
+		// Make it a SubRoutine to freeze up variables if it needed
+		int R = -1; int C = -1;
+		if(CR != null) { R = Coordinate.rowOf(CR); C = Coordinate.colOf(CR); }
+		// Prepare the signature
+		ExecSignature Signature = ExecSignature.newProcedureSignature(
+				"set",
+				$CProduct.getReturnTypeRefOf(ValueExpr),
+				new Location($CProduct.getCurrentCodeName(), C, R),
+				null
+				);
+		
+		return GetPatternExecutable($CProduct, Signature, ValueExpr);
+	}
+	
 	/** Create an assignment executable for Pattern assignment */
 	static public Executable GetPatternExecutableAssignment(CompileProduct $CProduct, Object Value, int[] CR) {
 		// It was not an executable (therefore not an expression), make it one and return
@@ -514,7 +563,14 @@ public class Util_Compiler {
 		
 		return GetPatternExecutable($CProduct, Signature, ValueExpr);
 	}
-
+	
+	/** Returns a wrapped expression of the given executable */
+	static Expression GetWrappedExecutableValue(MExecutable $ME, Executable ValueExec, Coordinate CR) {
+		if(ValueExec instanceof Expression)
+			 return Expression.newExpr((Expression)ValueExec);
+		else return $ME.newExpr(CR, Inst_ReCreate.Name, ValueExec);
+	}
+	
 	/** Returns a wrapped expression of the given executable */
 	static Expression GetWrappedExecutableValue(MExecutable $ME, Executable ValueExec, int[] CR) {
 		if(ValueExec instanceof Expression)
@@ -605,7 +661,7 @@ public class Util_Compiler {
 		// Get the engine
 		Engine      $Engine  = $CProduct.getEngine();
 		MExecutable $ME      = $Engine.getExecutableManager();
-		int         Position = $Result.posOf(0);
+		int         Position = $Result.startPositionOf(0);
 
 		// Before ------------------------------------------------------------------------------------------------------
 		Instruction Inst = $Engine.getInstruction("forEach");
@@ -619,12 +675,12 @@ public class Util_Compiler {
 		Inst_ForEach FEInst = (Inst_ForEach)$Engine.getInstruction(Inst_ForEach.Name);
 		TypeRef      TRef   = FEInst.getContainTypeRef($CProduct, $CProduct.getReturnTypeRefOf(Collection), Position);
 
-		Object[] Params = new Object[] { null, Name, $ME.newType($Result.locationCROf("#Collection"), TRef), Collection };
+		Object[] Params = new Object[] { null, Name, $ME.newType($Result.coordinateOf("#Collection"), TRef), Collection };
 		// Manipulate the context before sub
 		Inst.manipulateCompileContextBeforeSub(Params, $CProduct, Position);
 
 		Expression Body = null;
-		int[]      CR   = $Result.locationCROf("#Each");
+		Coordinate CR   = $Result.coordinateOf("#Each");
 		try {
 			$CProduct.newScope(null, EE_Text.TREF_Text);
 			$CProduct.newVariable(Name, TRef);
@@ -654,7 +710,7 @@ public class Util_Compiler {
 						},
 						new Expression[] {
 							$ME.newExpr(
-								$Result.locationCROf("#Separator"),
+								$Result.coordinateOf("#Separator"),
 								Inst_EchoText.Name,
 								$Result.valueOf("#Separator", $TPackage, $CProduct)
 							)
@@ -671,7 +727,7 @@ public class Util_Compiler {
 		}
 
 		// Body ------------------------------------------------------------------------------------------------------------
-		Expression Expr = $ME.newExprSub($Result.locationCROf(0), "forEach", Params, Body);
+		Expression Expr = $ME.newExprSub($Result.coordinateOf(0), "forEach", Params, Body);
 		if(!Expr.ensureParamCorrect($CProduct) || !Expr.manipulateCompileContextFinish($CProduct)) return null;
 		
 		Expr = $ME.newExpr(CR, Inst_CreateText.Name, Expression.newExpr($ME.newGroup(CR,  Expr, null)));

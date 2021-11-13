@@ -12,6 +12,7 @@ import net.nawaman.pattern.Instructions_Pattern.Inst_GetAttrMapPortElement;
 import net.nawaman.pattern.Instructions_Pattern.Inst_GetDHValueOrNull;
 import net.nawaman.pattern.Instructions_Pattern.Inst_GetMapPortElement;
 import net.nawaman.pattern.Instructions_Pattern.Inst_IsMapPortContainsKey;
+import net.nawaman.regparser.result.Coordinate;
 import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.PTypePackage;
 
@@ -28,7 +29,7 @@ public class Util_MapPort {
             final CompileProduct $CProduct) {
         final boolean aIsMapPort = CheckIfMapPort(OperandName, $Result, $TPackage, $CProduct);
         if (!aIsMapPort) {
-            final int aPosOfAssociateBegin = $Result.posOf(AssociateBeginName);
+            final int aPosOfAssociateBegin = $Result.startPositionOf(AssociateBeginName);
             $CProduct.reportError(
                     "Map-Port is requried for associate operation. <Util_MapPort:30>",
                     null,
@@ -54,7 +55,7 @@ public class Util_MapPort {
                 $CProduct.reportError(
                         "Only local variable or attribute can be a port. <Util_MapPort:49>",
                         null,
-                        $Result.posOf(AssociateBeginName));
+                        $Result.startPositionOf(AssociateBeginName));
                 return null;
             }
         }
@@ -75,7 +76,7 @@ public class Util_MapPort {
                         aKeyTRef
                     ),
                     null,
-                    $Result.posOf(AssociateBeginName));
+                    $Result.startPositionOf(AssociateBeginName));
             return null;
         }
         
@@ -84,7 +85,7 @@ public class Util_MapPort {
         // TODO - Eliminate this let check as map
         final boolean aIsContainKeyCheck = ($Result.textOf(CheckKeyContainName) != null);
         if (aIsContainKeyCheck) {
-            final int[]       aAssociateBeginCR = $Result.locationCROf(AssociateBeginName);
+            final Coordinate  aAssociateBeginCR = $Result.coordinateOf(AssociateBeginName);
             final Expression  aContainCheckExpr = $ME.newExpr(aAssociateBeginCR, Inst_IsMapPortContainsKey.Name, aOpr, aKey);
             final TypeRef     aResultRef        = $CProduct.getReturnTypeRefOf(aContainCheckExpr);
             if (!TKJava.TBoolean.getTypeRef().equals(aResultRef)) {
@@ -95,13 +96,13 @@ public class Util_MapPort {
                             aResultRef
                         ),
                         null,
-                        $Result.posOf(AssociateBeginName));
+                        $Result.startPositionOf(AssociateBeginName));
                 return null;
             }
             return aContainCheckExpr;
         }
         
-        final int[]      aAssociateBeginCR = $Result.locationCROf(AssociateBeginName);
+        final Coordinate aAssociateBeginCR = $Result.coordinateOf(AssociateBeginName);
         final Expression aPortExpr;
         
         if (!aIsGetAttrValue)
@@ -125,7 +126,7 @@ public class Util_MapPort {
                         aValueTRef
                     ),
                     null,
-                    $Result.posOf(AssociateBeginName));
+                    $Result.startPositionOf(AssociateBeginName));
             return null;
         }
         

@@ -12,6 +12,7 @@ import net.nawaman.curry.TLParametered.TRParametered;
 import net.nawaman.curry.compiler.CompileProduct;
 import net.nawaman.curry.compiler.Util_Atomic;
 import net.nawaman.curry.util.MoreData;
+import net.nawaman.regparser.result.Coordinate;
 import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.PTypePackage;
 
@@ -25,7 +26,7 @@ public class Util_NewPort {
 		if($Result.textOf("$New") != null) {
 			Engine      $Engine = $CProduct.getEngine();
 			MExecutable $ME     = $Engine.getExecutableManager();
-			ParseResult New     = $Result.subOf("#New");
+			ParseResult New     = $Result.subResultOf("#New");
 			Object[]    Params  = (Object[])New.valueOf("#Params", $TPackage, $CProduct);
 			
 			if((TRef instanceof TRParametered) && (Params.length == 0)) {
@@ -46,7 +47,7 @@ public class Util_NewPort {
 					TypeRef DTRef   = ((TRParametered)TRef).getParameterTypeRef(0);
 					TypeRef ListRef = new TLParametered.TRParametered(SimpleListRef, DTRef);
 					
-					int[] NewCR = $Result.locationCROf("$New");
+					Coordinate NewCR = $Result.coordinateOf("$New");
 					return $ME.newExpr(NewCR, Inst_NewInstance.Name, $ME.newType(NewCR, ListRef));
 					
 				} else if("pattern~>data=>SimpleSet".equals(TRefStr)) {
@@ -68,7 +69,7 @@ public class Util_NewPort {
                     TypeRef ValueTRef = ((TRParametered)TRef).getParameterTypeRef(1);
                     TypeRef MapRef    = new TLParametered.TRParametered(SimpleMapRef, KeyTRef, ValueTRef);
                     
-                    int[] NewCR = $Result.locationCROf("$New");
+                    Coordinate NewCR = $Result.coordinateOf("$New");
                     return $ME.newExpr(NewCR, Inst_NewInstance.Name, $ME.newType(NewCR, MapRef));
 				}
 			}
@@ -96,8 +97,8 @@ public class Util_NewPort {
 	        final boolean        IsDependent,
 			final String         VarName,
 			final int            VNamePos,
-			final int[]          TypeCR,
-			final int[]          ValueCR,
+			final Coordinate     TypeCR,
+			final Coordinate     ValueCR,
 			final ParseResult    $Result,
 			final PTypePackage   $TPackage,
 			final CompileProduct $CProduct) {
@@ -105,8 +106,8 @@ public class Util_NewPort {
 		// Get the engine
 		final Engine       $Engine = $CProduct.getEngine();
 		final MExecutable  $ME     = $Engine.getExecutableManager();
-		final int          ZeroPos = $Result.posOf(0);
-		final int[]        ZeroCR  = $Result.locationCROf(0);
+		final int          ZeroPos = $Result.startPositionOf(0);
+		final Coordinate   ZeroCR  = $Result.coordinateOf(0);
 		final TKDataHolder TKDH    = (TKDataHolder)($Engine.getTypeManager().getTypeKind(TKDataHolder.KindName));
 		
 		// Default PortKind
@@ -126,14 +127,14 @@ public class Util_NewPort {
 			);
 		}
 
-		final boolean IsNew        = $Result.textOf("$New")       != null;
-		final boolean IsNewOf      = $Result.textOf("$NewOfType") != null;
-		final boolean aIsDependent = IsDependent && !(IsNew || IsNewOf);
-		final int[]   aValueCR     = 
+		final boolean    IsNew        = $Result.textOf("$New")       != null;
+		final boolean    IsNewOf      = $Result.textOf("$NewOfType") != null;
+		final boolean    aIsDependent = IsDependent && !(IsNew || IsNewOf);
+		final Coordinate aValueCR     = 
                         IsNewOf
-                            ? $Result.locationCROf("$NewOfType")
+                            ? $Result.coordinateOf("$NewOfType")
                             : IsNew
-                                ? $Result.locationCROf("$New")
+                                ? $Result.coordinateOf("$New")
                                 : ValueCR;
 		
 		final Object     Value;
@@ -265,8 +266,8 @@ public class Util_NewPort {
 	    
         Engine        $Engine = $CProduct.getEngine(); 
         MExecutable   $ME     = $Engine.getExecutableManager();
-        int[]         ZeroCR  = $Result.locationCROf(0);
-        int[]         BodyCR  = $Result.locationCROf("$BodyStart");
+        Coordinate    ZeroCR  = $Result.coordinateOf(0);
+        Coordinate    BodyCR  = $Result.coordinateOf("$BodyStart");
         
         String[]      PNames;
         TypeRef[]     PTRefs;
@@ -289,7 +290,7 @@ public class Util_NewPort {
                             PNames,
                             false,
                             TKJava.TInteger.getTypeRef(),
-                            new Location($CProduct.getCurrentCodeName(), BodyCR[0], BodyCR[1]),
+                            new Location($CProduct.getCurrentCodeName(), BodyCR),
                             null
                         );
             $CProduct.newMacroScope(Signature);

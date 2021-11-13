@@ -81,7 +81,7 @@ public class Util_Pattern {
 			final ParseResult $Result, final PTypePackage $TPackage, final CompileProduct $CProduct) {
 
 		final String   ID = "PatternID"+Random.nextInt();
-		final String[] $Imports = Util_File.ExtractImports($PackageName, $Result.subsOf("#Import"), $Result, $TPackage, $CProduct);
+		final String[] $Imports = Util_File.ExtractImports($PackageName, $Result.subResultsOf("#Import"), $Result, $TPackage, $CProduct);
 		final FileCompileResult.TypeRegistration TReg = new FileCompileResult.TypeRegistration($PackageName, $Imports, ID);
 		
 		// Add the one that us compiled by Curry
@@ -104,7 +104,7 @@ public class Util_Pattern {
 				TypeRef OldOwnerTypeRef = $CProduct.getOwnerTypeRef();
 				
 				try {
-					ParseResult Sub = $Result.subOf(i);
+					ParseResult Sub = $Result.subResultOf(i);
 					
 					// Get the type name
 					String  TName = Sub.textOf(Util_TypeDef.enTYPE_NAME);
@@ -131,7 +131,7 @@ public class Util_Pattern {
 								"Invalid TypeDef result from `%s` (%s) <Util_TypeDef:30>",
 								$Result.nameOf(i), TSC
 							), null,
-							$Result.posOf(i));
+							$Result.startPositionOf(i));
 						return null;
 					}
 					
@@ -141,7 +141,7 @@ public class Util_Pattern {
 					
 					TypeSpecCreator TSCreator = (TypeSpecCreator)TSC;
 					Documentation   Document  = Doc;
-					Location        Location  = $CProduct.getCurrentLocation($Result.locationCROf(0));
+					Location        Location  = $CProduct.getCurrentLocation($Result.coordinateOf(0));
 					
 					// Create the type specification object
 					Object Type = new FileCompileResult.TypeSpecification(TName, Document, Access, false, Location, TSCreator);
@@ -151,7 +151,7 @@ public class Util_Pattern {
 						if(Type == null) continue;
 						Util_File.ReportResultProblem(
 							$CProduct, "Pattern Type", "TypeSpecification", "registering/refining type",
-							$Result.posOf(Index)
+							$Result.startPositionOf(Index)
 						);
 						return null;
 					}*/
@@ -206,7 +206,7 @@ public class Util_Pattern {
 				TypeRef OldOwnerTypeRef = $CProduct.getOwnerTypeRef();
 				
 				try {
-					ParseResult Sub = $Result.subOf(i);
+					ParseResult Sub = $Result.subResultOf(i);
 					
 					// Get the type name
 					String  TName = Sub.textOf(Util_TypeDef.enTYPE_NAME);
@@ -233,7 +233,7 @@ public class Util_Pattern {
 								"Invalid TypeDef result from `%s` (%s) <Util_Pattern:216>",
 								$Result.nameOf(i), PElements
 							), null,
-							$Result.posOf(i));
+							$Result.startPositionOf(i));
 						return null;
 					}
 					
@@ -301,8 +301,8 @@ public class Util_Pattern {
 		Vector<FileCompileResult.TypeElement<?>> Elements = new Vector<FileCompileResult.TypeElement<?>>();
 		
 		// Collect all the methods -------------------------------------------------------------------------------------
-		ParseResult[] CPRs = $Result.subsOf(  enCONSTRUCTOR);
-		Object[]      Cs   = $Result.valuesOf(enCONSTRUCTOR, $TPackage, $CProduct);
+		ParseResult[] CPRs = $Result.subResultsOf(enCONSTRUCTOR);
+		Object[]      Cs   = $Result.valuesOf    (enCONSTRUCTOR, $TPackage, $CProduct);
 		
 		for(int i = 0; i < ((Cs == null) ? 0 : Cs.length); i++) {
 			Object C = Cs[i];
@@ -318,8 +318,8 @@ public class Util_Pattern {
 		}
 
 		// Collect all the methods -------------------------------------------------------------------------------------
-		ParseResult[] MPRs = $Result.subsOf(  enOPERATION);
-		Object[]      Ms   = $Result.valuesOf(enOPERATION, $TPackage, $CProduct);
+		ParseResult[] MPRs = $Result.subResultsOf(enOPERATION);
+		Object[]      Ms   = $Result.valuesOf    (enOPERATION, $TPackage, $CProduct);
 		
 		for(int i = 0; i < ((Ms == null) ? 0 : Ms.length); i++) {
 			Object M = Ms[i];
@@ -335,8 +335,8 @@ public class Util_Pattern {
 		}
 		
 		// Collect all the attribute -----------------------------------------------------------------------------------
-		ParseResult[] FPRs = $Result.subsOf(  enATTRIBUTE);
-		Object[]      Fs   = $Result.valuesOf(enATTRIBUTE, $TPackage, $CProduct);
+		ParseResult[] FPRs = $Result.subResultsOf(enATTRIBUTE);
+		Object[]      Fs   = $Result.valuesOf    (enATTRIBUTE, $TPackage, $CProduct);
 		
 		for(int i = 0; i < ((Fs == null) ? 0 : Fs.length); i++) {
 			Object F = Fs[i];
@@ -432,7 +432,7 @@ public class Util_Pattern {
 		boolean IsWritable = !IsConstant;
 		
 		TypeRef     TRef   = (TypeRef)$Result.valueOf(Util_Element.enTYPE, $TPackage, $CProduct);
-		ParseResult DValue =          $Result.subOf(  Util_Element.enDEFAULTVALUE);
+		ParseResult DValue =          $Result.subResultOf(  Util_Element.enDEFAULTVALUE);
 		Location    Loc    = Util_Curry.GetLocationOf($Result, $CProduct, "$Start");
 		
 		// Default accessibility is public
@@ -457,7 +457,7 @@ public class Util_Pattern {
 			PortInfo.DName_Location,
 			new Location(
 				$CProduct.getCurrentCodeName(),
-				$Result.locationCROf(Util_Element.enDEFAULTVALUE)
+				$Result.coordinateOf(Util_Element.enDEFAULTVALUE)
 			)
 		);
 		
@@ -477,17 +477,17 @@ public class Util_Pattern {
 		if($Result.textOf("$New") != null) {
 			MExecutable $ME = $CProduct.getEngine().getExecutableManager(); 
 			Serializable DV = $ME.newExpr(
-				$Result.locationCROf("$New"),
+				$Result.coordinateOf("$New"),
 				Inst_NewInstance.Name,
 				$ME.newType(TRef),
 				UObject.EmptyObjectArray
 			);
-			Resolver = Util_ElementResolver.newAttrResolver_Value(IsStatic, Name, $Result.posOf("$New"), DV);
+			Resolver = Util_ElementResolver.newAttrResolver_Value(IsStatic, Name, $Result.startPositionOf("$New"), DV);
 			
 		} else if(DValue != null) {
 			int EIndex = -1;
 			for(int i = $Result.entryCount(); --i >= 0; ) {
-				if(DValue != $Result.subResultAt(i)) continue;
+				if(DValue != $Result.subResultOf(i)) continue;
 				EIndex = i;
 				break;
 			}
@@ -547,7 +547,7 @@ public class Util_Pattern {
 			$CProduct.reportError(
 				"Static method cannot be abstrct <Util_Pattern:475>.",
 				null,
-				$Result.posOf(Util_Element.enSTATIC)
+				$Result.startPositionOf(Util_Element.enSTATIC)
 			);
 			return null;
 		}
@@ -557,7 +557,7 @@ public class Util_Pattern {
 			$CProduct.reportError(
 				"Abstract method cannot have the body "+"<Util_Pattern:480>.",
 				null,
-				$Result.posOf(Util_Element.enSTARTBODY)
+				$Result.startPositionOf(Util_Element.enSTARTBODY)
 			);
 			return null;
 		}
@@ -567,7 +567,7 @@ public class Util_Pattern {
 			$CProduct.reportError(
 				"Missing method body <Util_Pattern:494>.",
 				null,
-				$Result.posOf(0)
+				$Result.startPositionOf(0)
 			);
 			return null;
 		}
@@ -609,7 +609,7 @@ public class Util_Pattern {
 					Access, Signature, EKind, MData, Document);
 			
 		} else if(HasBody) {
-			int EIndex = $Result.lastIndexFor(Util_Element.enCURRYBODY);
+			int EIndex = $Result.indexOf(Util_Element.enCURRYBODY);
 			// Create the resolver
 			ElementResolver Resolver = Util_ElementResolver.newOperResolver(
 						IsStatic, Signature, EKind, $Result, EIndex, null, $TPackage, $CProduct);
@@ -622,7 +622,7 @@ public class Util_Pattern {
 				"Internal Error: An impossible statuc for TypeMethod compilation is found. Please report this to " +
 				"the developer of Curry. <Util_Pattern:191>",
 				null,
-				$Result.posOf(0)
+				$Result.startPositionOf(0)
 			);
 			return null;
 		}
@@ -647,7 +647,7 @@ public class Util_Pattern {
 		if(TKP == null) {
 			$CProduct.reportError(
 				"Class type is not support <Util_Pattern:278>.",
-				null, $Result.posOf(0)
+				null, $Result.startPositionOf(0)
 			);
 			return null;
 		}
@@ -692,7 +692,7 @@ public class Util_Pattern {
 				$CProduct.reportError(
 					"Pattern interface must be targeting a Pattern: <Util_Pattern:649>",
 					null,
-					$Result.posOf(enINHERITREF)
+					$Result.startPositionOf(enINHERITREF)
 				);
 				return null;
 			}
