@@ -8,7 +8,7 @@
 @@:TypeDef Variant Parser as <CharSequence|RegParser> {
 
 	@@:Method getRegParser():RegParser {
-		return (this ==> RegParser) ? (RegParser)this : RegParser.newRegParser((String)this);
+		return (this ==> RegParser) ? (RegParser)this : RegParser.compileRegParser((String)this);
 	};
 	
 	@@:Method Parse(aText:String):ParseResult {

@@ -27,7 +27,7 @@
 	if(Checker == null) throw new NullPointerException("Checker of an error parser type cannot be null. ("+Name+")");
 	if(ErrMsg  == null) throw new NullPointerException("Error message of an error parser type cannot be null. ("+Name+")");
 	if(IsFatal != null) IsFatal = IsFatal.trim();
-	return new PTError(Name, RegParser.newRegParser($TPackage, Checker), ErrMsg.trim(), "true".equals(IsFatal));
+	return new ErrorParserType(Name, RegParser.compileRegParser($TPackage, Checker), ErrMsg.trim(), "true".equals(IsFatal));
 
 #end def_kind;
 
@@ -53,10 +53,10 @@
 	if(Name    == null) throw new NullPointerException("Parser type name cannot be null.");
 	if(Checker == null) throw new NullPointerException("Checker of a simple parser type cannot be null. ("+Name+")");
 	
-	net.nawaman.regparser.RegParser ParserCK = null;
-	net.nawaman.regparser.RPGetChecker ParserGC = null;
+	net.nawaman.regparser.RegParser             ParserCK = null;
+	net.nawaman.regparser.types.CheckerProvider ParserGC = null;
 	Object CkEn = null;	try { CkEn = net.nawaman.script.ScriptManager.GetEngineFromCode(Checker); } catch(RuntimeException RTE) {} 
-	if(CkEn == null) ParserCK = net.nawaman.regparser.RegParser.newRegParser($TPackage, Checker);
+	if(CkEn == null) ParserCK = net.nawaman.regparser.RegParser.compileRegParser($TPackage, Checker);
 	else             ParserGC = new net.nawaman.regparser.typepackage.TPGetChecker($TPackage, Name, Checker);
 	
 	if((ParserCK == null) && (ParserGC == null)) throw new NullPointerException("Checker is not a valid RegParser. ("+Name+")");
@@ -66,12 +66,12 @@
 	
 	if(ParserCK != null) {
 		if((TheVerifier == null) && (TheCompiler == null))
-			 return new net.nawaman.regparser.types.PTSimple(Name, ParserCK);
-		else return new net.nawaman.regparser.types.PTComposable(Name, ParserCK, TheVerifier, TheCompiler);
+			 return new net.nawaman.regparser.types.SimpleParserType    (Name, ParserCK);
+		else return new net.nawaman.regparser.types.ComposableParserType(Name, ParserCK, TheVerifier, TheCompiler);
 	} else {
 		if((TheVerifier == null) && (TheCompiler == null))
-			 return new net.nawaman.regparser.types.PTSimple(Name, ParserGC);
-		else return new net.nawaman.regparser.types.PTComposable(Name, ParserGC, TheVerifier, TheCompiler);
+			 return new net.nawaman.regparser.types.SimpleParserType    (Name, ParserGC);
+		else return new net.nawaman.regparser.types.ComposableParserType(Name, ParserGC, TheVerifier, TheCompiler);
 	}
 
 #end def_kind;

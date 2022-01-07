@@ -28,7 +28,7 @@ import net.nawaman.util.*;
 public class Util_Compiler {
 
 	/** RegPaser for parsing instruction */
-	static RegParser InstPattern = RegParser.newRegParser("($Pre:~(^get)*~)get($Mid:~(^Value)*~)Value($Post:~.*~)");
+	static RegParser InstPattern = RegParser.compile("($Pre:~(^get)*~)get($Mid:~(^Value)*~)Value($Post:~.*~)");
 
 	
 	static public Expression CompileValueExpr(String pName,

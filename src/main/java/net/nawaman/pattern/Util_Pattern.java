@@ -35,7 +35,7 @@ import net.nawaman.curry.compiler.StackOwnerAppender.AttrAppender;
 import net.nawaman.curry.compiler.StackOwnerAppender.OperAppender;
 import net.nawaman.curry.compiler.Util_File;
 import net.nawaman.curry.util.MoreData;
-import net.nawaman.regparser.PTypeProvider;
+import net.nawaman.regparser.ParserTypeProvider;
 import net.nawaman.regparser.result.ParseResult;
 import net.nawaman.regparser.typepackage.PTypePackage;
 import net.nawaman.util.UArray;
@@ -368,7 +368,7 @@ public class Util_Pattern {
 	}
 
 	static public StackOwnerAppender newTempConstant(
-			final CompileProduct pCProduct, final PTypeProvider $TPackage, final ParseResult $Result, 
+			final CompileProduct pCProduct, final ParserTypeProvider $TPackage, final ParseResult $Result, 
 			final Accessibility Access, final String pVName, final Location Loc, final Documentation pDoc,
 			final MoreData pMoreInfo, final MoreData pMoreData, final Object TempData) {
 		
@@ -380,7 +380,7 @@ public class Util_Pattern {
 		};
 	}
 	static public StackOwnerAppender newTempOutPort(
-			final CompileProduct pCProduct,  final PTypeProvider $TPackage,  final ParseResult $Result,
+			final CompileProduct pCProduct,  final ParserTypeProvider $TPackage,  final ParseResult $Result,
 			final Accessibility  Access,     final String        AName,      final TypeRef     TRef,
 			final PortKind       PKind,      final boolean       IsWritable, final boolean     IsIValueDefault,
 			final Location       Loc,        final Documentation Doc,        final MoreData    MoreInfo,
@@ -395,7 +395,7 @@ public class Util_Pattern {
 		};
 	}
 	static public StackOwnerAppender newTempInPort(
-			final CompileProduct pCProduct, final PTypeProvider $TPackage,  final ParseResult $Result,
+			final CompileProduct pCProduct, final ParserTypeProvider $TPackage,  final ParseResult $Result,
 			final Accessibility  Access,    final String        AName,      final TypeRef     TRef,
 			final PortKind       PKind,     final boolean       IsWritable, final boolean     IsIValueDefault,
 			final Location       Loc,       final Documentation Doc,        final MoreData    MoreInfo,
@@ -504,7 +504,7 @@ public class Util_Pattern {
 	}
 
 	static public StackOwnerAppender newTempPatternOperation(final char PEKind,
-			final CompileProduct pCProduct, final PTypeProvider $TPackage, final ParseResult $Result, 
+			final CompileProduct pCProduct, final ParserTypeProvider $TPackage, final ParseResult $Result, 
 			final Accessibility Access, final Executable pExec, final MoreData pMoreData, final Object TempData) {
 		
 		return new OperAppender() {
